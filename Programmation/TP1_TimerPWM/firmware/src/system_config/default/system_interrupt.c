@@ -69,16 +69,26 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 // *****************************************************************************
 // *****************************************************************************
 
+uint8_t absSpeedGlobal = 0;   
  
 
 void __ISR(_TIMER_1_VECTOR, ipl4AUTO) IntHandlerDrvTmrInstance0(void)
 {
     S_pwmSettings pData;
+    static uint8_t i = 0;
+    
+    PLIB_INT_SourceFlagClear(INT_ID_0,INT_SOURCE_TIMER_1);
+    
+    if(i<150) // 20x150 = 3000
+    {
+        i++;
+        return;
+    }
     
     GPWM_GetSettings(&pData); 
     GPWM_DispSettings(&pData);
     GPWM_ExecPWM(&pData);
-    PLIB_INT_SourceFlagClear(INT_ID_0,INT_SOURCE_TIMER_1);
+    absSpeedGlobal = pData.absSpeed;
 }
 void __ISR(_TIMER_2_VECTOR, ipl0AUTO) IntHandlerDrvTmrInstance1(void)
 {
@@ -90,7 +100,23 @@ void __ISR(_TIMER_3_VECTOR, ipl0AUTO) IntHandlerDrvTmrInstance2(void)
 }
 void __ISR(_TIMER_4_VECTOR, ipl4AUTO) IntHandlerDrvTmrInstance3(void)
 {
+    static uint8_t i = 0; 
     PLIB_INT_SourceFlagClear(INT_ID_0,INT_SOURCE_TIMER_4);
+    
+    if(i <  absSpeedGlobal/100)
+    {
+        LED2_W = 1;
+    }
+    else
+    {
+        LED2_W = 0;
+    }
+    i++;
+    
+    if(i > 100)
+    {
+        i = 0;
+    }
 }
  
 /*******************************************************************************

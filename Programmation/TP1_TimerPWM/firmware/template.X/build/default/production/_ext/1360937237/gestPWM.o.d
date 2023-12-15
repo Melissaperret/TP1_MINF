@@ -147,7 +147,20 @@ build/default/production/_ext/1360937237/gestPWM.o: ../src/gestPWM.c \
  ../../../../../../../../framework/system/ports/sys_ports_definitions.h \
  ../src/app.h ../../../../../../../../bsp/pic32mx_skes/Mc32DriverAdc.h \
  ../src/gestPWM.h \
- ../../../../../../../../bsp/pic32mx_skes/Mc32DriverLcd.h
+ ../../../../../../../../bsp/pic32mx_skes/Mc32DriverLcd.h \
+ C:\microchip\harmony\v2_06\framework\peripheral\oc\processor\oc_p32mx795f512l.h \
+ C:\microchip\harmony\v2_06\framework\peripheral\oc\processor\../templates/oc_EnableControl_Default.h \
+ C:\microchip\harmony\v2_06\framework\peripheral\oc\processor\../templates/oc_Registers.h \
+ C:\microchip\harmony\v2_06\framework\peripheral\oc\processor\../templates/oc_StopInIdle_Default.h \
+ C:\microchip\harmony\v2_06\framework\peripheral\oc\processor\../templates/oc_FaultInput_Default.h \
+ C:\microchip\harmony\v2_06\framework\peripheral\oc\processor\../templates/oc_FaultStatus_Default.h \
+ C:\microchip\harmony\v2_06\framework\peripheral\oc\processor\../templates/oc_TimerSelect_Default.h \
+ C:\microchip\harmony\v2_06\framework\peripheral\oc\processor\../templates/oc_AlternateClock_Unsupported.h \
+ C:\microchip\harmony\v2_06\framework\peripheral\oc\processor\../templates/oc_AlternateTimerSelect_Unsupported.h \
+ C:\microchip\harmony\v2_06\framework\peripheral\oc\processor\../templates/oc_BufferValue_32Bit_Variant.h \
+ C:\microchip\harmony\v2_06\framework\peripheral\oc\processor\../templates/oc_PulseWidth_32Bit_Variant.h \
+ C:\microchip\harmony\v2_06\framework\peripheral\oc\processor\../templates/oc_BufferSize_Default.h \
+ C:\microchip\harmony\v2_06\framework\peripheral\oc\processor\../templates/oc_CompareModeSelect_Default.h
 
 ../src/GestPWM.h:
 
@@ -450,3 +463,29 @@ build/default/production/_ext/1360937237/gestPWM.o: ../src/gestPWM.c \
 ../src/gestPWM.h:
 
 ../../../../../../../../bsp/pic32mx_skes/Mc32DriverLcd.h:
+
+C:\microchip\harmony\v2_06\framework\peripheral\oc\processor\oc_p32mx795f512l.h:
+
+C:\microchip\harmony\v2_06\framework\peripheral\oc\processor\../templates/oc_EnableControl_Default.h:
+
+C:\microchip\harmony\v2_06\framework\peripheral\oc\processor\../templates/oc_Registers.h:
+
+C:\microchip\harmony\v2_06\framework\peripheral\oc\processor\../templates/oc_StopInIdle_Default.h:
+
+C:\microchip\harmony\v2_06\framework\peripheral\oc\processor\../templates/oc_FaultInput_Default.h:
+
+C:\microchip\harmony\v2_06\framework\peripheral\oc\processor\../templates/oc_FaultStatus_Default.h:
+
+C:\microchip\harmony\v2_06\framework\peripheral\oc\processor\../templates/oc_TimerSelect_Default.h:
+
+C:\microchip\harmony\v2_06\framework\peripheral\oc\processor\../templates/oc_AlternateClock_Unsupported.h:
+
+C:\microchip\harmony\v2_06\framework\peripheral\oc\processor\../templates/oc_AlternateTimerSelect_Unsupported.h:
+
+C:\microchip\harmony\v2_06\framework\peripheral\oc\processor\../templates/oc_BufferValue_32Bit_Variant.h:
+
+C:\microchip\harmony\v2_06\framework\peripheral\oc\processor\../templates/oc_PulseWidth_32Bit_Variant.h:
+
+C:\microchip\harmony\v2_06\framework\peripheral\oc\processor\../templates/oc_BufferSize_Default.h:
+
+C:\microchip\harmony\v2_06\framework\peripheral\oc\processor\../templates/oc_CompareModeSelect_Default.h:

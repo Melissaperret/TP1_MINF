@@ -17,6 +17,7 @@
 #include "app.h"
 #include "Mc32DriverAdc.h"
 #include "Mc32DriverLcd.h"
+#include "C:\microchip\harmony\v2_06\framework\peripheral\oc\processor\oc_p32mx795f512l.h"
 
 
 
@@ -38,7 +39,7 @@ void GPWM_GetSettings(S_pwmSettings *pData)
     int16_t rapportAdc180 = 0; 
     static S_ADCResults tabValADC[10]; 
     static uint8_t i = 0;
-    S_ADCResults moyenne;
+    S_ADCResults moyenne = {0,0};
 
     moyenne.Chan0 = moyenne.Chan0 * 10 - tabValADC[i].Chan0;
     moyenne.Chan1 = moyenne.Chan1 * 10 - tabValADC[i].Chan1;
@@ -50,15 +51,19 @@ void GPWM_GetSettings(S_pwmSettings *pData)
     moyenne.Chan0 = (moyenne.Chan0 + tabValADC[i].Chan0) / 10;
     moyenne.Chan1 = (moyenne.Chan1 + tabValADC[i].Chan1) / 10;
 
-    rapportAdc180 = (moyenne.Chan0 * 198) / 1023; 
+    rapportAdc180 = ((moyenne.Chan0 * 198) / 1023)+0.5; 
     pData->SpeedSetting = rapportAdc180 - 99;
     pData->absSpeed = abs(pData->SpeedSetting); 
     
-    rapportAdc180 = (moyenne.Chan1 * 198) / 1023; 
-    pData->AngleSetting = rapportAdc180 - 99;
+    rapportAdc180 = ((moyenne.Chan1 * 180) / 1023)+0.5; 
+    pData->AngleSetting = rapportAdc180 - 90;
     //pData->absAngle = abs(rapportAdc180 - 99); 
     
     i++;
+    if(i >= 10)
+    {
+        i=0;
+    }
 }
 
 
@@ -79,6 +84,20 @@ void GPWM_DispSettings(S_pwmSettings *pData)
 // Execution PWM et gestion moteur à partir des info dans structure
 void GPWM_ExecPWM(S_pwmSettings *pData)
 {
+    BSP_EnableHbrige();
+    if(pData->SpeedSetting >= 0)
+    {
+        AIN1_HBRIDGE_W = 1;
+        AIN2_HBRIDGE_W = 0;
+    }
+    else
+    {
+        AIN1_HBRIDGE_W = 0;
+        AIN2_HBRIDGE_W = 1;
+    }
+    
+    PLIB_OC_PulseWidth16BitSet(OC_ID_2, (pData->absSpeed*1999)/100);
+    PLIB_OC_PulseWidth16BitSet(OC_ID_3, (((pData->AngleSetting*2249)/90)+3749));
     
 }
 
