@@ -117,7 +117,7 @@ void APP_Initialize ( void )
 {
     /* Place the App state machine in its initial state. */
     appData.state = APP_STATE_INIT;
-
+    
     
     /* TODO: Initialize your application's state machine and other
      * parameters.
@@ -135,6 +135,7 @@ void APP_Initialize ( void )
 
 void APP_Tasks ( void )
 {
+    
     
     /* Check the application's current state. */
     switch ( appData.state )
@@ -154,11 +155,8 @@ void APP_Tasks ( void )
             BSP_InitADC10();
             
             LED_Off();
-            
-            DRV_TMR0_Start();
-            DRV_TMR1_Start();
-            DRV_TMR2_Start();
-            DRV_TMR3_Start();   
+
+            GPWM_Initialize(&PWMData);
           
             
             APP_UpdateState(APP_STATE_WAIT);

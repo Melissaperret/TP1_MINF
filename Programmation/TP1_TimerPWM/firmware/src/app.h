@@ -74,7 +74,8 @@ extern "C" {
 // Section: Type Definitions
 // *****************************************************************************
 // *****************************************************************************
-
+    
+    
 // *****************************************************************************
 /* Application states
 
@@ -85,6 +86,7 @@ extern "C" {
     This enumeration defines the valid application states.  These states
     determine the behavior of the application at various times.
 */
+
 
 typedef enum
 {

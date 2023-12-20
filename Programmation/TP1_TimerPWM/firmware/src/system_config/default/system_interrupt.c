@@ -63,13 +63,15 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 #include "app.h"
 #include "system_definitions.h"
 
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: System Interrupt Vector Functions
 // *****************************************************************************
 // *****************************************************************************
 
-uint8_t absSpeedGlobal = 0;   
+uint8_t absSpeedGlobal = 0;  
+
  
 
 void __ISR(_TIMER_1_VECTOR, ipl4AUTO) IntHandlerDrvTmrInstance0(void)
@@ -100,22 +102,15 @@ void __ISR(_TIMER_3_VECTOR, ipl0AUTO) IntHandlerDrvTmrInstance2(void)
 }
 void __ISR(_TIMER_4_VECTOR, ipl4AUTO) IntHandlerDrvTmrInstance3(void)
 {
-    static uint8_t i = 0; 
+    uint8_t compteur = 0;
+    
     PLIB_INT_SourceFlagClear(INT_ID_0,INT_SOURCE_TIMER_4);
     
-    if(i <  absSpeedGlobal/100)
-    {
-        LED2_W = 1;
-    }
-    else
-    {
-        LED2_W = 0;
-    }
-    i++;
+    compteur++;
     
-    if(i > 100)
+    if(compteur >= 100)
     {
-        i = 0;
+        compteur = 0;
     }
 }
  
