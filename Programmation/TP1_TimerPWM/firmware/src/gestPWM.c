@@ -44,24 +44,12 @@ void GPWM_Initialize(S_pwmSettings *pData)
 // Obtention vitesse et angle (mise a jour des 4 champs de la structure)
 void GPWM_GetSettings(S_pwmSettings *pData)	
 {
-    //int16_t rapportAdc180 = 0; 
     int16_t chan0Val0a198 = 0; 
-    int16_t chan1Val0a180 = 0; 
     static S_ADCResults tabValADC[10]; 
     static uint8_t i = 0;
     static uint8_t j = 0;
     float moyenneChan0; 
     float moyenneChan1; 
-    
-    //On stock les 10 dernières valeurs du potentiomètre 
-    if(i >= 9)
-    {
-        i = 0; 
-    }
-    else
-    {
-        i++;
-    }
 
     // Lecture du convertisseur AD
     tabValADC[i] = BSP_ReadAllADC();
@@ -78,39 +66,19 @@ void GPWM_GetSettings(S_pwmSettings *pData)
     moyenneChan0 = moyenneChan0 / 10; 
     moyenneChan1 = moyenneChan1 / 10; 
     
-
-    chan0Val0a198 = ((float)198/1023)* moyenneChan0; // 1023 * X = 198 => X = 198/1023
+    chan0Val0a198 = ((moyenneChan0*198)/1023);    // 1023 * X = 198 => X = 198/1023
     pData->SpeedSetting = chan0Val0a198 - 99;
     pData->absSpeed = abs(pData->SpeedSetting);
     
-    chan1Val0a180 = ((float)180/1023)*moyenneChan1;  // 1023 * X = 180 => X = 180/1023
-    pData->AngleSetting = chan1Val0a180 - 90;
-    //pData->absAngle = abs(rapportAdc180 - 99); 
+    pData->absAngle = ((moyenneChan1*180)/1023);  // 1023 * X = 180 => X = 180/1023
+    pData->AngleSetting = pData->absAngle - 90;
     
-   
-//    moyenne.Chan0 = moyenne.Chan0 * 10 - tabValADC[i].Chan0;
-//    moyenne.Chan1 = moyenne.Chan1 * 10 - tabValADC[i].Chan1;
-//    
-//    // Lecture du convertisseur AD
-//    tabValADC[i] = BSP_ReadAllADC();
-//
-//    // conversion
-//    moyenne.Chan0 = (moyenne.Chan0 + tabValADC[i].Chan0) / 10;
-//    moyenne.Chan1 = (moyenne.Chan1 + tabValADC[i].Chan1) / 10;
-//
-//    rapportAdc180 = ((moyenne.Chan0 * 198) / 1023)+0.5; 
-//    pData->SpeedSetting = rapportAdc180 - 99;
-//    pData->absSpeed = abs(pData->SpeedSetting); 
-//    
-//    rapportAdc180 = ((moyenne.Chan1 * 180) / 1023)+0.5; 
-//    pData->AngleSetting = rapportAdc180 - 90;
-//    //pData->absAngle = abs(rapportAdc180 - 99); 
-//    
-//    i++;
-//    if(i >= 10)
-//    {
-//        i=0;
-//    }
+    //On stock les 10 dernières valeurs du potentiomètre 
+    i++;
+    if(i >= 10)
+    {
+        i=0;
+    }
 }
 
 
@@ -122,7 +90,7 @@ void GPWM_DispSettings(S_pwmSettings *pData)
     lcd_gotoxy(1,2); 
     printf_lcd("SpeedSetting %3d", pData->SpeedSetting);
     lcd_gotoxy(1,3); 
-    printf_lcd("adbSpeed     %2d", pData->absSpeed);
+    printf_lcd("adbSpeed      %2d", pData->absSpeed);
     lcd_gotoxy(1,4); 
     printf_lcd("Angle        %3d", pData->AngleSetting);
     
@@ -131,29 +99,34 @@ void GPWM_DispSettings(S_pwmSettings *pData)
 // Execution PWM et gestion moteur à partir des info dans structure
 void GPWM_ExecPWM(S_pwmSettings *pData)
 {
-    BSP_EnableHbrige();
-    if(pData->SpeedSetting >= 0)
+    
+    if(pData->SpeedSetting > 0)
     {
         AIN1_HBRIDGE_W = 1;
         AIN2_HBRIDGE_W = 0;
     }
-    else
+    else if (pData->SpeedSetting < 0)
     {
         AIN1_HBRIDGE_W = 0;
         AIN2_HBRIDGE_W = 1;
     }
+    else 
+    {
+        AIN1_HBRIDGE_W = 0;
+        AIN2_HBRIDGE_W = 0;
+    }
     
     PLIB_OC_PulseWidth16BitSet(OC_ID_2, (pData->absSpeed*1999)/100);
-    PLIB_OC_PulseWidth16BitSet(OC_ID_3, (((pData->AngleSetting*2249)/90)+3749));
+    
+    PLIB_OC_PulseWidth16BitSet(OC_ID_3, (((pData->absAngle*4500)/180)+1500));
     
 }
 
 // Execution PWM software
 void GPWM_ExecPWMSoft(S_pwmSettings *pData)
 {
-    //compteur = 0;
     
-    if(compteur < pData->absSpeed/100)
+    if(compteur < pData->absSpeed)
     {
         LED2_W = 1;
     }

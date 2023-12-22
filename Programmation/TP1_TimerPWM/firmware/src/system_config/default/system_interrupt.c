@@ -61,6 +61,7 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 
 #include "system/common/sys_common.h"
 #include "app.h"
+#include "C:\microchip\harmony\v2_06\apps\MINF\TP\TP1_MINF\Programmation\TP1_TimerPWM\firmware\src\gestPWM.h"
 #include "system_definitions.h"
 
 
@@ -70,13 +71,14 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 // *****************************************************************************
 // *****************************************************************************
 
-uint8_t absSpeedGlobal = 0;  
 
+S_pwmSettings pData;
+uint8_t compteur = 0;
  
 
 void __ISR(_TIMER_1_VECTOR, ipl4AUTO) IntHandlerDrvTmrInstance0(void)
 {
-    S_pwmSettings pData;
+    LED0_W = 1;
     static uint8_t i = 0;
     
     PLIB_INT_SourceFlagClear(INT_ID_0,INT_SOURCE_TIMER_1);
@@ -90,7 +92,8 @@ void __ISR(_TIMER_1_VECTOR, ipl4AUTO) IntHandlerDrvTmrInstance0(void)
     GPWM_GetSettings(&pData); 
     GPWM_DispSettings(&pData);
     GPWM_ExecPWM(&pData);
-    absSpeedGlobal = pData.absSpeed;
+    
+    LED0_W = 0;
 }
 void __ISR(_TIMER_2_VECTOR, ipl0AUTO) IntHandlerDrvTmrInstance1(void)
 {
@@ -100,11 +103,12 @@ void __ISR(_TIMER_3_VECTOR, ipl0AUTO) IntHandlerDrvTmrInstance2(void)
 {
     PLIB_INT_SourceFlagClear(INT_ID_0,INT_SOURCE_TIMER_3);
 }
-void __ISR(_TIMER_4_VECTOR, ipl4AUTO) IntHandlerDrvTmrInstance3(void)
+void __ISR(_TIMER_4_VECTOR, ipl7AUTO) IntHandlerDrvTmrInstance3(void)
 {
-    uint8_t compteur = 0;
+    LED1_W = 1;
     
     PLIB_INT_SourceFlagClear(INT_ID_0,INT_SOURCE_TIMER_4);
+    GPWM_ExecPWMSoft(&pData);
     
     compteur++;
     
@@ -112,6 +116,8 @@ void __ISR(_TIMER_4_VECTOR, ipl4AUTO) IntHandlerDrvTmrInstance3(void)
     {
         compteur = 0;
     }
+    
+    LED1_W = 0;
 }
  
 /*******************************************************************************

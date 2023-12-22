@@ -5,15 +5,13 @@
         <group>
             <file>file:/C:/microchip/harmony/v2_06/apps/MINF/TP/TP1_MINF/Programmation/TP1_TimerPWM/firmware/src/app.c</file>
             <file>file:/C:/microchip/harmony/v2_06/bsp/pic32mx_skes/bsp.c</file>
-            <file>file:/C:/microchip/harmony/v2_06/bsp/pic32mx_skes/Mc32DriverAdc.h</file>
             <file>file:/C:/microchip/harmony/v2_06/apps/MINF/TP/TP1_MINF/Programmation/TP1_TimerPWM/firmware/src/gestPWM.h</file>
-            <file>file:/C:/microchip/harmony/v2_06/apps/MINF/TP/TP1_MINF/Programmation/TP1_TimerPWM/firmware/src/system_config/default/system_tasks.c</file>
-            <file>file:/C:/microchip/harmony/v2_06/apps/MINF/TP/TP1_MINF/Programmation/TP1_TimerPWM/firmware/src/system_config/default/framework/driver/tmr/src/drv_tmr_static.c</file>
+            <file>file:/C:/microchip/harmony/v2_06/apps/MINF/TP/TP1_MINF/Programmation/TP1_TimerPWM/firmware/template.X/nbproject/Makefile-impl.mk</file>
+            <file>file:/C:/microchip/harmony/v2_06/bsp/pic32mx_skes/bsp.h</file>
             <file>file:/C:/microchip/harmony/v2_06/apps/MINF/TP/TP1_MINF/Programmation/TP1_TimerPWM/firmware/src/gestPWM.c</file>
             <file>file:/C:/microchip/harmony/v2_06/apps/MINF/TP/TP1_MINF/Programmation/TP1_TimerPWM/firmware/src/app.h</file>
-            <file>file:/C:/microchip/harmony/v2_06/apps/MINF/TP/TP1_MINF/Programmation/TP1_TimerPWM/firmware/src/system_config/default/framework/driver/oc/src/drv_oc_static.c</file>
+            <file>file:/C:/microchip/harmony/v2_06/apps/MINF/TP/TP1_MINF/Programmation/TP1_TimerPWM/firmware/template.X/nbproject/Makefile-default.mk</file>
             <file>file:/C:/microchip/harmony/v2_06/apps/MINF/TP/TP1_MINF/Programmation/TP1_TimerPWM/firmware/src/system_config/default/system_interrupt.c</file>
-            <file>file:/C:/microchip/harmony/v2_06/bsp/pic32mx_skes/Mc32DriverAdc.c</file>
         </group>
     </open-files>
 </project-private>
