@@ -2,26 +2,24 @@
 // GestPWM.c
 /*--------------------------------------------------------*/
 //	Description :	Gestion des PWM 
-//			        pour TP1 2016-2017
+//			        pour TP1 2023-2024
 //
-//	Auteur 		: 	C. HUBER
+//	Auteur 		: 	Perret & Affolter
 //
 //	Version		:	V1.1
-//	Compilateur	:	XC32 V1.42 + Harmony 1.08
+//	Compilateur	:	XC32 V5.50 + Harmony 1.08
 //
 /*--------------------------------------------------------*/
-
-
 
 #include "GestPWM.h"
 #include "app.h"
 #include "Mc32DriverAdc.h"
 #include "Mc32DriverLcd.h"
 #include "C:\microchip\harmony\v2_06\framework\peripheral\oc\processor\oc_p32mx795f512l.h"
+#include <stdint.h>
 
 
-S_pwmSettings PWMData;      // pour les settings
-
+S_pwmSettings PWMData;      // Variable pour 
 
 
 void GPWM_Initialize(S_pwmSettings *pData)
@@ -85,21 +83,36 @@ void GPWM_GetSettings(S_pwmSettings *pData)
 // Affichage des information en exploitant la structure
 void GPWM_DispSettings(S_pwmSettings *pData)
 { 
-    lcd_gotoxy(1,1); 
-    printf_lcd("TP1 PWM 2023-2024");
-    lcd_gotoxy(1,2); 
-    printf_lcd("SpeedSetting %3d", pData->SpeedSetting);
-    lcd_gotoxy(1,3); 
-    printf_lcd("adbSpeed      %2d", pData->absSpeed);
-    lcd_gotoxy(1,4); 
-    printf_lcd("Angle        %3d", pData->AngleSetting);
+    static uint8_t i = 0; 
     
+    if(i == 0)
+    {
+        lcd_ClearLine(2);
+        lcd_ClearLine(3);
+        
+        lcd_gotoxy(1,1); 
+        printf_lcd("TP1 PWM 2023-2024");
+        lcd_gotoxy(1,2); 
+        printf_lcd("SpeedSetting");
+        lcd_gotoxy(1,3); 
+        printf_lcd("adbSpeed");
+        lcd_gotoxy(1,4); 
+        printf_lcd("Angle");
+        
+        i++;
+    }
+    
+    lcd_gotoxy(14,2); 
+    printf_lcd("%3d", pData->SpeedSetting);
+    lcd_gotoxy(15,3); 
+    printf_lcd("%2d", pData->absSpeed);
+    lcd_gotoxy(14,4); 
+    printf_lcd("%3d", pData->AngleSetting);
 }
 
 // Execution PWM et gestion moteur à partir des info dans structure
 void GPWM_ExecPWM(S_pwmSettings *pData)
 {
-    
     if(pData->SpeedSetting > 0)
     {
         AIN1_HBRIDGE_W = 1;
@@ -119,13 +132,11 @@ void GPWM_ExecPWM(S_pwmSettings *pData)
     PLIB_OC_PulseWidth16BitSet(OC_ID_2, (pData->absSpeed*1999)/100);
     
     PLIB_OC_PulseWidth16BitSet(OC_ID_3, (((pData->absAngle*4500)/180)+1500));
-    
 }
 
 // Execution PWM software
 void GPWM_ExecPWMSoft(S_pwmSettings *pData)
 {
-    
     if(compteur < pData->absSpeed)
     {
         LED2_W = 1;

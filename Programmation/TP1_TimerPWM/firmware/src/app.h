@@ -52,10 +52,7 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 // *****************************************************************************
 // *****************************************************************************
 
-#include <stdint.h>
-#include <stdbool.h>
-#include <stddef.h>
-#include <stdlib.h>
+
 #include "system_config.h"
 #include "system_definitions.h"
 #include "Mc32DriverAdc.h"
@@ -92,7 +89,7 @@ typedef enum
 {
 	/* Application's state machine's initial state. */
 	APP_STATE_INIT=0,
-    APP_STATE_WAIT=1,         
+    APP_STATE_WAIT,         
 	APP_STATE_SERVICE_TASKS,
 
 	/* TODO: Define states used by the application state machine. */
@@ -205,8 +202,8 @@ void APP_Initialize ( void );
 void APP_Tasks( void );
 
 //--Déclarations des fonctions--//
-void LED_Off(void);
-void APP_UpdateState(APP_STATES newState);
+void LED_Off(void);   //Fonction pour éteindre les LEDS
+void APP_UpdateState(APP_STATES newState); //Fonction qui modifie l'état de la machine d'état 
 
 #endif /* _APP_H */
 

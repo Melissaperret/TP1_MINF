@@ -63,6 +63,7 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 #include "app.h"
 #include "C:\microchip\harmony\v2_06\apps\MINF\TP\TP1_MINF\Programmation\TP1_TimerPWM\firmware\src\gestPWM.h"
 #include "system_definitions.h"
+#include <stdint.h>
 
 
 // *****************************************************************************
@@ -72,52 +73,59 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 // *****************************************************************************
 
 
-S_pwmSettings pData;
-uint8_t compteur = 0;
+S_pwmSettings pData;  //variable de sauvegarde de la vitesse et de l'angle
+uint8_t compteur = 0; //variable de comptage pour le PWMSoft 
  
 
 void __ISR(_TIMER_1_VECTOR, ipl4AUTO) IntHandlerDrvTmrInstance0(void)
 {
-    LED0_W = 1;
+    LED0_W = 1;  //sert à prendre les mesures, mais peut être retiré pour le code final  
     static uint8_t i = 0;
-    
-    PLIB_INT_SourceFlagClear(INT_ID_0,INT_SOURCE_TIMER_1);
-    
-    if(i<150) // 20x150 = 3000
+
+    // Attente de 3secondes pour l'initialisation 
+    if(i<150) // 20x150 = 3000ms
     {
         i++;
-        return;
+    }
+    else
+    {
+        // Appel des fonctions d'obtention vitesse et angle, d'affichage, d'execution PWM et gestion moteur 
+        GPWM_GetSettings(&pData); 
+        GPWM_DispSettings(&pData);
+        GPWM_ExecPWM(&pData);
+
+        LED0_W = 0; //sert à prendre les mesures, mais peut être retiré pour le code final 
     }
     
-    GPWM_GetSettings(&pData); 
-    GPWM_DispSettings(&pData);
-    GPWM_ExecPWM(&pData);
-    
-    LED0_W = 0;
+    PLIB_INT_SourceFlagClear(INT_ID_0,INT_SOURCE_TIMER_1); //Clear le flag de l'interruption
 }
+
 void __ISR(_TIMER_2_VECTOR, ipl0AUTO) IntHandlerDrvTmrInstance1(void)
 {
-    PLIB_INT_SourceFlagClear(INT_ID_0,INT_SOURCE_TIMER_2);
+    PLIB_INT_SourceFlagClear(INT_ID_0,INT_SOURCE_TIMER_2); //Clear le flag de l'interruption
 }
+
 void __ISR(_TIMER_3_VECTOR, ipl0AUTO) IntHandlerDrvTmrInstance2(void)
 {
-    PLIB_INT_SourceFlagClear(INT_ID_0,INT_SOURCE_TIMER_3);
+    PLIB_INT_SourceFlagClear(INT_ID_0,INT_SOURCE_TIMER_3); //Clear le flag de l'interruption
 }
 void __ISR(_TIMER_4_VECTOR, ipl7AUTO) IntHandlerDrvTmrInstance3(void)
 {
-    LED1_W = 1;
+    LED1_W = 1; //sert à prendre les mesures, mais peut être retiré pour le code final 
     
-    PLIB_INT_SourceFlagClear(INT_ID_0,INT_SOURCE_TIMER_4);
-    GPWM_ExecPWMSoft(&pData);
+    GPWM_ExecPWMSoft(&pData); //Appel de la fonction qui crée le PWMSoft 
     
     compteur++;
     
-    if(compteur >= 100)
+    //Reset du compteur pour le PWMsoft 
+    if(compteur >= 100) 
     {
         compteur = 0;
     }
     
-    LED1_W = 0;
+    LED1_W = 0; //sert à prendre les mesures, mais peut être retiré pour le code final 
+    
+    PLIB_INT_SourceFlagClear(INT_ID_0,INT_SOURCE_TIMER_4); //Clear le flag de l'interruption
 }
  
 /*******************************************************************************

@@ -56,6 +56,7 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 #include "app.h"
 #include "Mc32DriverLcd.h"
 
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: Global Data Definitions
@@ -135,14 +136,14 @@ void APP_Initialize ( void )
 
 void APP_Tasks ( void )
 {
-    
-    
     /* Check the application's current state. */
     switch ( appData.state )
     {
         /* Application's initial state. */
         case APP_STATE_INIT:
-        {            
+        {        
+            GPWM_Initialize(&PWMData); // Initialisation du pont en H 
+            
             // Initialiser le lcd
             lcd_init(); 
             lcd_bl_on();
@@ -152,14 +153,11 @@ void APP_Tasks ( void )
             lcd_gotoxy(1,3); 
             printf_lcd("Jeremy Affolter");
             
-            BSP_InitADC10();
+            BSP_InitADC10(); // Initialisation de l'ADC 
             
-            LED_Off();
+            LED_Off(); // Eteindre toutes les leds
 
-            GPWM_Initialize(&PWMData);
-          
-            
-            APP_UpdateState(APP_STATE_WAIT);
+            APP_UpdateState(APP_STATE_WAIT); // Fait passer à l'état WAIT
             break;
         }
 
@@ -175,8 +173,6 @@ void APP_Tasks ( void )
         }
 
         /* TODO: implement your application state machine.*/
-        
-
         /* The default state should never be executed. */
         default:
         {
@@ -186,14 +182,16 @@ void APP_Tasks ( void )
     }
 }
 
+//Fonction qui modifie l'état de la machine d'état 
 void APP_UpdateState(APP_STATES newState)
 {
     appData.state = newState; //mise à jour d'état
 }
 
-void LED_Off (void)//fonction éteinte des LEDS
+//Fonction pour éteindre les LEDS
+void LED_Off (void) 
 {
-    BSP_LEDOff(BSP_LED_0);
+    BSP_LEDOff(BSP_LED_0); 
     BSP_LEDOff(BSP_LED_1);
     BSP_LEDOff(BSP_LED_2);
     BSP_LEDOff(BSP_LED_3);
