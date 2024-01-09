@@ -79,6 +79,7 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 */
 
 APP_DATA appData;
+S_pwmSettings PWMData;      //Variable pour l'appel de la fonction GPWM_Initialize
 
 // *****************************************************************************
 // *****************************************************************************
@@ -142,9 +143,9 @@ void APP_Tasks ( void )
         /* Application's initial state. */
         case APP_STATE_INIT:
         {        
-            GPWM_Initialize(&PWMData); // Initialisation du pont en H 
+            GPWM_Initialize(&PWMData); //Initialisation du pont en H 
             
-            // Initialiser le lcd
+            //Initialiser le lcd
             lcd_init(); 
             lcd_bl_on();
             printf_lcd("TP1 Pwm 2023-2024");
@@ -153,42 +154,49 @@ void APP_Tasks ( void )
             lcd_gotoxy(1,3); 
             printf_lcd("Jeremy Affolter");
             
-            BSP_InitADC10(); // Initialisation de l'ADC 
+            BSP_InitADC10(); //Initialisation de l'ADC 
             
-            LED_Off(); // Eteindre toutes les leds
+            LED_Off(); //Eteindre toutes les leds
 
-            APP_UpdateState(APP_STATE_WAIT); // Fait passer à l'état WAIT
+            APP_UpdateState(APP_STATE_WAIT); //Fait passer à l'état WAIT
             break;
         }
 
         case APP_STATE_WAIT:
         {
-            break; //ne rien faire / attendre
+            break; //Ne rien faire / attendre
         }
         
         case APP_STATE_SERVICE_TASKS:
         { 
-            APP_UpdateState(APP_STATE_WAIT);
+            APP_UpdateState(APP_STATE_WAIT); //Va dans l'état d'attente
             break;
         }
-
-        /* TODO: implement your application state machine.*/
-        /* The default state should never be executed. */
+        
         default:
         {
-            /* TODO: Handle error in application's state machine. */
             break;
         }
     }
 }
 
-//Fonction qui modifie l'état de la machine d'état 
+//-------------------------------------------
+// Auteur: JAR, MPT
+// Description: Fonction qui modifie l'état de la machine d'état 
+// Entrées: APP_STATES newState
+// Sorties: -
+//-------------------------------------------
 void APP_UpdateState(APP_STATES newState)
 {
-    appData.state = newState; //mise à jour d'état
+    appData.state = newState; //Mise à jour d'état
 }
 
-//Fonction pour éteindre les LEDS
+//-------------------------------------------
+// Auteur: JAR, MPT
+// Description: Fonction pour éteindre les leds
+// Entrées: -
+// Sorties: -
+//-------------------------------------------
 void LED_Off (void) 
 {
     BSP_LEDOff(BSP_LED_0); 
